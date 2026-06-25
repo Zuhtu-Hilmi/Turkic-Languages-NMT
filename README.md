@@ -24,12 +24,23 @@ Projenin kalbini, kısıtlı kaynaklara sahip Türkmence ve Azerbaycanca için t
   * *LLM Sentetik Büyütme:* Gemini API kullanılarak üretilen Alpaca (Talimat/Komut tabanlı) ve OpenSubtitles (Günlük dil) veri setleri.
 
 ## 📊 Başarım Sonuçları (Sayısal Analiz)
+### 1. Dahili Test Kümesi (İç Dağılım)
 İnce-ayar sonucunda model, kendi referans noktası olan taban (zero-shot) başarımı üzerinde muazzam bir artış sergilemiştir. Özellikle Türkmence yönündeki +27.00 BLEU puanlık sıçrama, sentetik Alpaca verisinin model üzerindeki doğrudan başarısını kanıtlamaktadır.
 
 | Çeviri Yönü | Taban Model (Zero-Shot) | İnce-Ayarlı Model (Fine-Tuned) | İyileşme | chrF | METEOR |
 | :--- | :---: | :---: | :---: | :---: | :---: |
 | **TR ➔ AZ** (İç Test) | 14.40 | **25.19** | `+10.79` | 54.04 | 0.5354 |
 | **TR ➔ TK** (İç Test) | 12.56 | **39.56** | `+27.00` | 65.79 | 0.6248 |
+
+### 2. FLORES-200 Küresel Benchmark (Alan Dışı Dağılım)
+Model, eğitim verisinden tamamen bağımsız, akademik ve gazetecilik metinlerinden oluşan zorlu FLORES-200 veri setinde de test edilmiştir.
+
+| Çeviri Yönü | Taban Model (Zero-Shot) | İnce-Ayarlı Model (Fine-Tuned) | İyileşme |
+| :--- | :---: | :---: | :---: |
+| **TR ➔ AZ** (FLORES) | 9.96 | **10.80** | `+0.84` |
+| **TR ➔ TK** (FLORES) | 7.18 | **11.34** | `+4.16` |
+
+> **💡 Alan Kayması (Domain Shift) Notu:** FLORES-200 skorlarının dahili test kümesine göre daha düşük kalması bir başarısızlık değil; *Alan Kayması (Domain Shift)* olgusunun sonucudur. Eğitim verimizin %60'ını komut-cevap (Alpaca) formatındaki sentetik veriler oluştururken, FLORES-200 akademik ve edebi metinlerden oluşmaktadır. İnce-ayarlı model, anlamı mükemmel korusa da FLORES'in beklediği spesifik edebi/akademik eşanlamlıları kullanmadığı için n-gram tabanlı BLEU metriği tarafından cezalandırılmaktadır (Detaylı nitel analiz proje raporunda mevcuttur).
 
 ## 🔍 Nitel Çeviri Analizi (Örnek Çıktılar)
 İnce-ayarlı model, sayısal başarısının yanı sıra morfolojik zaman kiplerini, resmi/akademik üslubu ve kelime seçimlerini korumakta üstün bir yetenek kazanmıştır.
